@@ -1,30 +1,4 @@
 function varargout = l3_MAIN(varargin)
-% L3_MAIN MATLAB code for l3_MAIN.fig
-%      L3_MAIN, by itself, creates a new L3_MAIN or raises the existing
-%      singleton*.
-%
-%      H = L3_MAIN returns the handle to a new L3_MAIN or the handle to
-%      the existing singleton*.
-%
-%      L3_MAIN('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in L3_MAIN.M with the given input arguments.
-%
-%      L3_MAIN('Property','Value',...) creates a new L3_MAIN or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before l3_MAIN_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to l3_MAIN_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help l3_MAIN
-
-% Last Modified by GUIDE v2.5 04-Mar-2016 12:37:24
-
-% Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
@@ -41,33 +15,84 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-% End initialization code - DO NOT EDIT
 
-
-% --- Executes just before l3_MAIN is made visible.
 function l3_MAIN_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to l3_MAIN (see VARARGIN)
-
-% Choose default command line output for l3_MAIN
 handles.output = hObject;
-
-% Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes l3_MAIN wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
-
-
-% --- Outputs from this function are returned to the command line.
 function varargout = l3_MAIN_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
 varargout{1} = handles.output;
+
+
+
+function eM_Callback(hObject, eventdata, handles)
+
+function eM_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function pushbutton1_Callback(hObject, eventdata, handles)
+%% Кнопка выбора файла
+if strcmp(get(handles.eM,'Enable'),'on')==1
+    % Получаем данные о желаемом файле
+    [FIN.name FIN.path F_ind]=uigetfile('*.*');
+    % Проверка на выбран ли файл
+    if F_ind==1
+        %     Если выбран
+        % Получаем его содержимое
+        FIN.DaTa=fread(fopen(strcat(FIN.path,FIN.name)))';
+        set(handles.pushbutton1,'String','Ввести сообщение')
+        set(handles.eM,'String',['Выбран файл: ',FIN.name]);
+        set(handles.eM,'Enable','inactive')
+        set(handles.eM,'BackgroundColor',[.9 .9 .9])
+        save('FIN.mat','FIN');
+    else
+        %     Если не выбран
+    end
+else
+    set(handles.eM,'BackgroundColor',[1 1 1]);
+    set(handles.eM,'Enable','on');
+    set(handles.eM,'String','Засекреченное сообщение');
+    set(handles.pushbutton1,'String','Выбрать файл');
+end
+
+
+function pushbutton2_Callback(hObject, eventdata, handles)
+%% Кнопка кодирования / декодирования
+clc
+% Получаем сообщение
+if strcmp(get(handles.eM,'Enable'),'on')==1
+    FIN.DaTa=unicode2native(get(handles.eM,'String'));
+else
+    load('FIN.mat')
+end
+
+K='0110';
+
+M=dec2bin(FIN.DaTa,8);
+M=reshape(M',4,numel(M)/4)';
+
+for i=1:numel(M(:,1))
+    M(i,:)
+
+end
+
+
+
+
+
+
+function eD_Callback(hObject, eventdata, handles)
+function eD_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function eS_Callback(hObject, eventdata, handles)
+function eS_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

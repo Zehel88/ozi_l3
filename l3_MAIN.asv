@@ -15,16 +15,83 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-% End initialization code - DO NOT EDIT
 
-
-% --- Executes just before l3_MAIN is made visible.
 function l3_MAIN_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 guidata(hObject, handles);
 
-
-
-% --- Outputs from this function are returned to the command line.
 function varargout = l3_MAIN_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
+
+
+
+function eM_Callback(hObject, eventdata, handles)
+
+function eM_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function pushbutton1_Callback(hObject, eventdata, handles)
+%% Кнопка выбора файла
+if strcmp(get(handles.eM,'Enable'),'on')==1
+    % Получаем данные о желаемом файле
+    [FIN.name FIN.path F_ind]=uigetfile('*.*');
+    % Проверка на выбран ли файл
+    if F_ind==1
+        %     Если выбран
+        % Получаем его содержимое
+        FIN.DaTa=fread(fopen(strcat(FIN.path,FIN.name)))';
+        set(handles.pushbutton1,'String','Ввести сообщение')
+        set(handles.eM,'String',['Выбран файл: ',FIN.name]);
+        set(handles.eM,'Enable','inactive')
+        set(handles.eM,'BackgroundColor',[.9 .9 .9])
+        save('FIN.mat','FIN');
+    else
+        %     Если не выбран
+    end
+else
+    set(handles.eM,'BackgroundColor',[1 1 1]);
+    set(handles.eM,'Enable','on');
+    set(handles.eM,'String','Засекреченное сообщение');
+    set(handles.pushbutton1,'String','Выбрать файл');
+end
+
+
+function pushbutton2_Callback(hObject, eventdata, handles)
+%% Кнопка кодирования / декодирования
+clc
+% Получаем сообщение
+if strcmp(get(handles.eM,'Enable'),'on')==1
+    FIN.DaTa=unicode2native(get(handles.eM,'String'));
+else
+    load('FIN.mat')
+end
+
+K=
+
+M=dec2bin(FIN.DaTa,8);
+M=reshape(M',4,numel(M)/4)';
+
+for i=1:numel(M(:,1))
+    
+end
+
+
+
+
+
+
+function eD_Callback(hObject, eventdata, handles)
+function eD_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function eS_Callback(hObject, eventdata, handles)
+function eS_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
