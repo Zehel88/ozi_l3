@@ -84,10 +84,31 @@ K(1)=Kn;
 
 end
 sM=reshape(sM',8,numel(sM)/8)';
-sM=char(bin2dec(sM)')
-set(handles.eS,'String',sM)
+sM=(bin2dec(sM)');
+set(handles.eS,'String',char(sM))
 
 % Расшифровка
+
+K='0101';
+sM=dec2bin(sM);
+sM=reshape(sM',4,numel(sM)/4)';
+
+
+for i=1:numel(sM(:,1))
+    for j=1:4
+       dM(i,j)=num2str(~strcmp(sM(i,j),K(j))); 
+    end
+    
+Kn=num2str(~strcmp(K(3),K(4)));
+K(2:4)=K(1:3);
+K(1)=Kn;
+
+end
+
+dM=reshape(dM',8,numel(dM)/8)';
+dM=native2unicode(bin2dec(dM)');
+set(handles.eD,'String',(dM))
+
 
 
 
