@@ -68,11 +68,11 @@ else
     load('FIN.mat')
 end
 
-K='0101';
+bK='0101';
 
 M=dec2bin(FIN.DaTa,8);
 M=reshape(M',4,numel(M)/4)';
-
+K=bK;
 for i=1:numel(M(:,1))
     for j=1:4
        sM(i,j)=num2str(~strcmp(M(i,j),K(j))); 
@@ -84,12 +84,16 @@ K(1)=Kn;
 
 end
 sM=reshape(sM',8,numel(sM)/8)';
-sM=(bin2dec(sM)');
-set(handles.eS,'String',char(sM))
+sM=(bin2dec(sM)')
 
+noEnter=find(sM==10);
+sM(noEnter)=11;
+
+set(handles.eS,'String',char(sM))
+sM(noEnter)=10;
 % Расшифровка
 
-K='0101';
+K=bK;
 sM=dec2bin(sM);
 sM=reshape(sM',4,numel(sM)/4)';
 
@@ -106,7 +110,10 @@ K(1)=Kn;
 end
 
 dM=reshape(dM',8,numel(dM)/8)';
+
 dM=native2unicode(bin2dec(dM)');
+noEnter=find(dM==10);
+dM(noEnter)=11;
 set(handles.eD,'String',(dM))
 
 
