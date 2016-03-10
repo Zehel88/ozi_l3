@@ -68,18 +68,26 @@ else
     load('FIN.mat')
 end
 
-K='0110';
+K='0101';
 
 M=dec2bin(FIN.DaTa,8);
 M=reshape(M',4,numel(M)/4)';
 
 for i=1:numel(M(:,1))
-    M(i,:)
+    for j=1:4
+       sM(i,j)=num2str(~strcmp(M(i,j),K(j))); 
+    end
+    
+Kn=num2str(~strcmp(K(3),K(4)));
+K(2:4)=K(1:3);
+K(1)=Kn;
 
 end
+sM=reshape(sM',8,numel(sM)/8)';
+sM=char(bin2dec(sM)')
+set(handles.eS,'String',sM)
 
-
-
+% Расшифровка
 
 
 
